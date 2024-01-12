@@ -22,7 +22,9 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    UserOperatingSystem = table.Column<int>(type: "INTEGER", nullable: false)
+                    AssignedTo = table.Column<string>(type: "TEXT", nullable: true),
+                    Comments = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,6 +37,7 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Tickets");
+
         }
     }
 }

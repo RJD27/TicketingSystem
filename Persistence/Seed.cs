@@ -5,19 +5,24 @@ namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context){
-            if(context.Tickets.Any()) return;
-            var tickets = new List<Ticket>{
+        public static async Task SeedData(DataContext context)
+        {
+            if (context.Tickets.Any()) return;
+
+            var tickets = new List<Ticket>
+            {
                 new Ticket
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Login Issue",
+                    Title = "Login Issue Updated",
                     Description = "Unable to log in. Getting an authentication error.",
                     DateCreated = DateTime.Now.AddDays(-5),
                     Name = "John Doe",
                     Email = "john.doe@example.com",
                     PhoneNumber = "123-456-7890",
-                    UserOperatingSystem = Domain.OperatingSystem.Windows
+                    Comments = "User is having trouble remembering the password.",
+                    Status = "Open",
+                    AssignedTo = "Support Team"
                 },
                 new Ticket
                 {
@@ -28,7 +33,9 @@ namespace Persistence
                     Name = "Jane Smith",
                     Email = "jane.smith@example.com",
                     PhoneNumber = "987-654-3210",
-                    UserOperatingSystem = Domain.OperatingSystem.Linux
+                    Comments = "Crash occurs during the checkout process.",
+                    Status = "In Progress",
+                    AssignedTo = "Development Team"
                 },
                 new Ticket
                 {
@@ -39,7 +46,9 @@ namespace Persistence
                     Name = "Bob Johnson",
                     Email = "bob.johnson@example.com",
                     PhoneNumber = "555-123-4567",
-                    UserOperatingSystem = Domain.OperatingSystem.Mac
+                    Comments = "Hardware issue with the power supply.",
+                    Status = "Open",
+                    AssignedTo = "IT Team"
                 },
                 new Ticket
                 {
@@ -50,11 +59,14 @@ namespace Persistence
                     Name = "Alice Williams",
                     Email = "alice.williams@example.com",
                     PhoneNumber = "777-999-8888",
-                    UserOperatingSystem = Domain.OperatingSystem.Windows
+                    Comments = "User is unable to access shared drives.",
+                    Status = "Open",
+                    AssignedTo = "Network Team"
                 },
             };
+
             await context.Tickets.AddRangeAsync(tickets);
-            await context.SaveChangesAsync();;
+            await context.SaveChangesAsync();
         }
     }
 }

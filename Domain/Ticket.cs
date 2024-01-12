@@ -1,11 +1,5 @@
 namespace Domain
 {
-    public enum OperatingSystem
-    {
-        Windows,
-        Linux,
-        Mac
-    }
     public class Ticket
     {
         public Guid Id { get; set; }
@@ -15,7 +9,8 @@ namespace Domain
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public OperatingSystem UserOperatingSystem { get; set; }
-
+        public string Comments { get; set; }
+        public string Status { get; set; }
+        public string AssignedTo { get; set; }
     }
 }

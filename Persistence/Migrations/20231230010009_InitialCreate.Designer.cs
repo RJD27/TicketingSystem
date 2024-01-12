@@ -44,8 +44,14 @@ namespace Persistence.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserOperatingSystem")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("AssignedTo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comments")
+                    .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                    .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
