@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 import { Ticket } from '../models/ticket';
 import NavBar from './NavBar';
 import TicketDashboard from '../../features/tickets/dashboard/TicketDashboard';
+import { v4 as uuid } from 'uuid';
 
 function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -38,15 +39,23 @@ function App() {
   function handleCreateOrEditTicket(ticket: Ticket) {
     ticket.id
       ? setTickets([...tickets.filter(x => x.id !== ticket.id), ticket])
-      : setTickets([...tickets,  ticket]);
+      : setTickets([...tickets, {...ticket, id: uuid()}]);
     setEditMode(false);
     setSelectedTicket(ticket);
   }
 
+  function handleDeleteTicket(id: string) {
+    setTickets([...tickets.filter(x => x.id !== id)])
+  }
+
   return (
-    <div>
-      <NavBar openForm={handleFormOpen} />
-      <Container style={{ paddingLeft: '13.5em' }}>
+    <Grid>
+      <Grid.Column >
+        <Container>
+          <NavBar openForm={handleFormOpen} />
+        </Container>
+      </Grid.Column>
+      <Grid.Column mobile={16} tablet={13} computer={13} floated="right" id="content">
         <TicketDashboard
           tickets={tickets}
           selectedTicket={selectedTicket}
@@ -56,9 +65,10 @@ function App() {
           openForm={handleFormOpen}
           closeForm={handleFormClose}
           createOrEdit={handleCreateOrEditTicket}
+          deleteTicket={handleDeleteTicket}
         />
-      </Container>
-    </div>
+      </Grid.Column>
+    </Grid>
   )
 }
 
