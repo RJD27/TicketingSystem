@@ -1,15 +1,24 @@
 import { Button, Divider, Grid, GridColumn, Header, Segment } from "semantic-ui-react";
 import { Ticket } from "../../../app/models/ticket";
+import { SyntheticEvent, useState } from "react";
 
 interface Props {
     ticket: Ticket;
     cancelSelectTicket: () => void;
     openForm: (id: string) => void;
     deleteTicket: (id: string) => void;
+    submitting: boolean;
 }
 
 
-export default function TicketDetails({ ticket, cancelSelectTicket, openForm, deleteTicket }: Props) {
+export default function TicketDetails({ ticket, cancelSelectTicket, openForm, deleteTicket, submitting }: Props) {
+    const [target, setTarget] = useState('');
+
+    function handleTicketDelete(e: SyntheticEvent<HTMLButtonElement> , id: string) {
+        setTarget(e.currentTarget.name);
+        deleteTicket(id);
+    }
+
     return (
         <Segment>
             <Grid>
@@ -20,10 +29,12 @@ export default function TicketDetails({ ticket, cancelSelectTicket, openForm, de
                     </Grid.Column>
                     <GridColumn>
                         <Button
+                            name={ticket.id}
                             icon="trash"
                             inverted
                             color="red"
-                            onClick={() => { cancelSelectTicket(); deleteTicket(ticket.id) }}
+                            loading={submitting && target === ticket.id}
+                            onClick={(e) => handleTicketDelete(e, ticket.id)}
                             style={{ float: 'right' }}
                         />
                     </GridColumn>
@@ -55,7 +66,7 @@ export default function TicketDetails({ ticket, cancelSelectTicket, openForm, de
                     </Grid.Column>
                     <Grid.Column width={2}>
                         <b>Priority</b>
-                        <p>{ticket.status}</p>
+                        <p>{ticket.comments}</p>
                     </Grid.Column>
                     <Grid.Column>
                         <b>Status</b>

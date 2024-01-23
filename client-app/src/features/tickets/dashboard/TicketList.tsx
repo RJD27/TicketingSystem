@@ -22,7 +22,7 @@ export default function TicketList({ tickets, selectTicket }: Props) {
                     All Tickets
                 </Header>
             </Grid.Row>
-            <Table singleLine striped selectable unstackable>
+            <Table singleLine striped selectable unstackable color="blue">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Title</Table.HeaderCell>
@@ -50,7 +50,7 @@ export default function TicketList({ tickets, selectTicket }: Props) {
                             <Table.Cell style={{ whiteSpace: "nowrap", width: "300px", overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
                                 {ticket.description}
                             </Table.Cell>
-                            <Table.Cell></Table.Cell>
+                            <Table.Cell>{ticket.comments}</Table.Cell>
                             <Table.Cell>{ticket.assignedTo}</Table.Cell>
                             <Table.Cell>{ticket.status}</Table.Cell>
                             <Table.Cell>{ticket.dateCreated}</Table.Cell>
