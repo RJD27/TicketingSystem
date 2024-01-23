@@ -6,14 +6,15 @@ This is a simple ticketing system built with ASP.NET Core (.NET 7) for managing 
 
 This ticketing system allows users to submit and manage support tickets related to computer issues. You can view a list of all submitted tickets, and users can track the status of their requests.
 
-**Technologies Used**
+**Tech Used**
 
--ASP.NET Core 7
--Entity Framework Core
--React
--TypeScript
--Semantic UI React
--MediatR
+- ASP.NET Core 7
+- Entity Framework Core
+- React
+- TypeScript
+- Semantic UI React
+- MediatR
+- Axios
 
 How to Run
 ---------------------------------------------------------------------
