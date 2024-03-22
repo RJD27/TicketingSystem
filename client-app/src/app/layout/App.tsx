@@ -74,7 +74,7 @@ function App() {
   if (loading) return <LoadingComponent content='Loading app'/>
 
   return (
-    <Grid>
+    <Grid >
       <Grid.Column >
         <Container>
           <NavBar openForm={handleFormOpen} />

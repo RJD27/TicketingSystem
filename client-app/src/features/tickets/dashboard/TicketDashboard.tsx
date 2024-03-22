@@ -21,7 +21,7 @@ export default function TicketDashboard({ tickets, selectedTicket, deleteTicket,
     selectTicket, cancelSelectTicket, editMode, openForm, closeForm, createOrEdit, submitting }: Props) {
     return (
         <Grid style={{ marginTop: '5px' }}>
-            <Grid.Column width={10}>
+            <Grid.Column width={15}>
                 <TicketList tickets={tickets}
                     selectTicket={selectTicket}
                     deleteTicket={selectTicket}
