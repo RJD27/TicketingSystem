@@ -1,20 +1,17 @@
 import { Grid, Header, Table } from "semantic-ui-react";
-import { Ticket } from "../../../app/models/ticket";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    tickets: Ticket[];
-    selectTicket: (id: string) => void;
-    deleteTicket: (id: string) => void;
-}
-
-export default function TicketList({ tickets, selectTicket }: Props) {
+export default observer(function TicketList() {
     // const [activePage, setActivePage] = useState(1);
     // const itemsPerPage = 12
 
     // const indexOfLastTicket = activePage * itemsPerPage;
     // const indexOfFirstTicket = indexOfLastTicket - itemsPerPage;
     // const currentTickets = tickets.slice(indexOfFirstTicket, indexOfLastTicket); currentTickets
-        
+    const {ticketStore} = useStore()
+    const {ticketsByDate} = ticketStore;
+
     return (
         <div>
             <Grid.Row>
@@ -35,8 +32,8 @@ export default function TicketList({ tickets, selectTicket }: Props) {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {tickets.map((ticket) => (
-                        <Table.Row key={ticket.id} onClick={() => selectTicket(ticket.id)}>
+                    {ticketsByDate.map((ticket) => (
+                        <Table.Row key={ticket.id} onClick={() => ticketStore.selectTicket(ticket.id)}>
                             <Table.Cell>
                                 {ticket.title}
                             </Table.Cell>
@@ -60,4 +57,4 @@ export default function TicketList({ tickets, selectTicket }: Props) {
             </Table>
         </div>
     )
-}
+})

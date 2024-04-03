@@ -1,17 +1,19 @@
 import { Button, Divider, Grid, GridColumn, Header, Modal } from "semantic-ui-react";
-import { Ticket } from "../../../app/models/ticket";
 import { SyntheticEvent, useState } from "react";
+import { useStore } from "../../../app/stores/store";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 interface Props {
-    ticket: Ticket;
-    cancelSelectTicket: () => void;
-    openForm: (id: string) => void;
     deleteTicket: (id: string) => void;
     submitting: boolean;
 }
 
-export default function TicketDetails({ ticket, cancelSelectTicket, openForm, deleteTicket, submitting }: Props) {
+export default function TicketDetails({ deleteTicket, submitting }: Props) {
     const [target, setTarget] = useState('');
+    const {ticketStore} = useStore();
+    const {selectedTicket: ticket, openForm, cancelSelectedTicket} = ticketStore;
+
+    if (!ticket) return <LoadingComponent />
 
     function handleTicketDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
         setTarget(e.currentTarget.name);
@@ -21,7 +23,7 @@ export default function TicketDetails({ ticket, cancelSelectTicket, openForm, de
     return (
         <>
             <Modal
-                onClose={cancelSelectTicket}
+                onClose={cancelSelectedTicket}
                 open={true}
             >
                 <Modal.Content>
@@ -38,7 +40,7 @@ export default function TicketDetails({ ticket, cancelSelectTicket, openForm, de
                                     inverted
                                     color="red"
                                     loading={submitting && target === ticket.id}
-                                    onClick={(e) => {handleTicketDelete(e, ticket.id), cancelSelectTicket}}
+                                    onClick={(e) => {handleTicketDelete(e, ticket.id)}}
                                     style={{ float: 'right' }}
                                 />
                             </GridColumn>
@@ -83,7 +85,7 @@ export default function TicketDetails({ ticket, cancelSelectTicket, openForm, de
                     <p>{ticket.description}</p>
                     <Button.Group widths='2'>
                         <Button onClick={() => openForm(ticket.id)} basic color="blue" content='Edit'/>
-                        <Button onClick={cancelSelectTicket} basic color="grey" content='Cancel' />
+                        <Button onClick={cancelSelectedTicket} basic color="grey" content='Cancel' />
                     </Button.Group>
                 </Modal.Content>
             </Modal>

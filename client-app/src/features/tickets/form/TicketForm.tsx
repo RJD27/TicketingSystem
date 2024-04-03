@@ -1,15 +1,12 @@
 import { Segment, Form, Button, Divider, Menu, Grid, Dropdown, Modal } from "semantic-ui-react";
-import { Ticket } from "../../../app/models/ticket";
 import { ChangeEvent, useState } from "react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-    ticket: Ticket | undefined;
-    closeForm: () => void;
-    createOrEdit: (ticket: Ticket) => void;
-    submitting: boolean;
-}
+export default observer(function TicketForm() {
 
-export default function TicketForm({ ticket: selectedTicket, closeForm, createOrEdit, submitting }: Props) {
+    const {ticketStore} = useStore();
+    const {selectedTicket, closeForm, createTicket, updateTicket, loading} = ticketStore;
 
     const initialState = selectedTicket ?? {
         id: '',
@@ -34,7 +31,7 @@ export default function TicketForm({ ticket: selectedTicket, closeForm, createOr
     const [ticket, setTicket] = useState(initialState);
 
     function handleSubmit() {
-        createOrEdit(ticket);
+        ticket.id ? updateTicket(ticket) : createTicket(ticket);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -111,11 +108,11 @@ export default function TicketForm({ ticket: selectedTicket, closeForm, createOr
                         </Grid.Row>
                     </Grid>
                     <Divider />
-                    <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
+                    <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                     <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
 
                 </Form>
             </Segment>
         </Modal>
     )
-}
+})

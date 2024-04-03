@@ -1,12 +1,12 @@
 import "semantic-ui-css/semantic.min.css";
 import { Button, Grid, Icon, Menu } from "semantic-ui-react";
 import "./NavBar.css";
+import { useStore } from "../stores/store";
 
-interface Props {
-  openForm: () => void;
-}
+export default function NavBar() {
 
-export default function NavBar({ openForm }: Props) {
+  const {ticketStore} = useStore();
+
   return (
     <div className="App">
       <Grid padded className="tablet computer only">
@@ -37,7 +37,7 @@ export default function NavBar({ openForm }: Props) {
               <Icon name="user" />
               Assigned to Me
             </Menu.Item>
-            <Menu.Item as="a" onClick={openForm}>
+            <Menu.Item as="a" onClick={() => ticketStore.openForm()}>
               <Icon name="plus circle" />
               Create Ticket
             </Menu.Item>
