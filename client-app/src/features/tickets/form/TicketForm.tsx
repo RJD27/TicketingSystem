@@ -16,7 +16,7 @@ export default observer(function TicketForm() {
         email: '',
         phoneNumber: '',
         description: '',
-        comments: '',
+        priority: '',
         assignedTo: '',
         status: 'Open',
     }
@@ -99,9 +99,9 @@ export default observer(function TicketForm() {
                                 <p>Priority</p>
                                 <Menu compact>
                                     <Dropdown
-                                        text={ticket.comments}
+                                        text={ticket.priority}
                                         options={ticketStatusOptions}
-                                        simple item onChange={(_, data) => setTicket({ ...ticket, comments: data.value as string })}
+                                        simple item onChange={(_, data) => setTicket({ ...ticket, priority: data.value as string })}
                                     />
                                 </Menu>
                             </Grid.Column>

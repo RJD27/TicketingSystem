@@ -26,9 +26,6 @@ namespace Persistence.Migrations
                     b.Property<string>("AssignedTo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Comments")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
@@ -42,6 +39,9 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Priority")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")

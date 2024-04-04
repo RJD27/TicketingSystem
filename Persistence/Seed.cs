@@ -20,7 +20,7 @@ namespace Persistence
                     Name = "John Doe",
                     Email = "john.doe@example.com",
                     PhoneNumber = "123-456-7890",
-                    Comments = "User is having trouble remembering the password.",
+                    Priority = "User is having trouble remembering the password.",
                     Status = "Open",
                     AssignedTo = "Support Team"
                 },
@@ -33,7 +33,7 @@ namespace Persistence
                     Name = "Jane Smith",
                     Email = "jane.smith@example.com",
                     PhoneNumber = "987-654-3210",
-                    Comments = "Crash occurs during the checkout process.",
+                    Priority = "Crash occurs during the checkout process.",
                     Status = "In Progress",
                     AssignedTo = "Development Team"
                 },
@@ -46,7 +46,7 @@ namespace Persistence
                     Name = "Bob Johnson",
                     Email = "bob.johnson@example.com",
                     PhoneNumber = "555-123-4567",
-                    Comments = "Hardware issue with the power supply.",
+                    Priority = "Hardware issue with the power supply.",
                     Status = "Open",
                     AssignedTo = "IT Team"
                 },
@@ -59,7 +59,7 @@ namespace Persistence
                     Name = "Alice Williams",
                     Email = "alice.williams@example.com",
                     PhoneNumber = "777-999-8888",
-                    Comments = "User is unable to access shared drives.",
+                    Priority = "User is unable to access shared drives.",
                     Status = "Open",
                     AssignedTo = "Network Team"
                 },

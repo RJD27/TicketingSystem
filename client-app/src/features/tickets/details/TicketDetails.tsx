@@ -72,7 +72,7 @@ export default function TicketDetails({ deleteTicket, submitting }: Props) {
                             </Grid.Column>
                             <Grid.Column width={2}>
                                 <b>Priority</b>
-                                <p>{ticket.comments}</p>
+                                <p>{ticket.priority}</p>
                             </Grid.Column>
                             <Grid.Column>
                                 <b>Status</b>

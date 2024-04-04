@@ -47,7 +47,7 @@ export default observer(function TicketList() {
                                     {ticket.description}
                                 </div>
                             </Table.Cell>
-                            <Table.Cell>{ticket.comments}</Table.Cell>
+                            <Table.Cell>{ticket.priority}</Table.Cell>
                             <Table.Cell>{ticket.assignedTo}</Table.Cell>
                             <Table.Cell>{ticket.status}</Table.Cell>
                             <Table.Cell>{ticket.dateCreated}</Table.Cell>

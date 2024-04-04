@@ -6,7 +6,7 @@ export interface Ticket {
   name: string;
   email: string;
   phoneNumber: string;
-  comments: string;
+  priority: string;
   status: string;
   assignedTo: string;
 }
