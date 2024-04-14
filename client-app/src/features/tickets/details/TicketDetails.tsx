@@ -1,31 +1,25 @@
 import { Button, Divider, Grid, GridColumn, Header, Modal } from "semantic-ui-react";
-import { SyntheticEvent, useState } from "react";
+import { useEffect } from "react";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { observer } from "mobx-react-lite";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-interface Props {
-    deleteTicket: (id: string) => void;
-    submitting: boolean;
-}
-
-export default function TicketDetails({ deleteTicket, submitting }: Props) {
-    const [target, setTarget] = useState('');
+export default observer(function TicketDetails() {
     const {ticketStore} = useStore();
-    const {selectedTicket: ticket, openForm, cancelSelectedTicket} = ticketStore;
+    const {selectedTicket: ticket, deleteTicket, loading, loadTicket, loadingInitial, } = ticketStore;
+    const {id} = useParams();
+    const navigate = useNavigate();
 
-    if (!ticket) return <LoadingComponent />
+    useEffect(() => {
+        if (id) loadTicket(id);
+    }, [id, loadTicket])
 
-    function handleTicketDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
-        setTarget(e.currentTarget.name);
-        deleteTicket(id);
-    }
+    if (loadingInitial || !ticket) return <LoadingComponent />
 
     return (
         <>
-            <Modal
-                onClose={cancelSelectedTicket}
-                open={true}
-            >
+            <Modal open={true}>
                 <Modal.Content>
                     <Grid>
                         <Grid.Row columns={2}>
@@ -39,8 +33,8 @@ export default function TicketDetails({ deleteTicket, submitting }: Props) {
                                     icon="trash"
                                     inverted
                                     color="red"
-                                    loading={submitting && target === ticket.id}
-                                    onClick={(e) => {handleTicketDelete(e, ticket.id)}}
+                                    loading={loading}
+                                    onClick={() => deleteTicket(ticket.id).then(() => navigate(`/tickets/`))}
                                     style={{ float: 'right' }}
                                 />
                             </GridColumn>
@@ -84,11 +78,11 @@ export default function TicketDetails({ deleteTicket, submitting }: Props) {
                     <Divider />
                     <p>{ticket.description}</p>
                     <Button.Group widths='2'>
-                        <Button onClick={() => openForm(ticket.id)} basic color="blue" content='Edit'/>
-                        <Button onClick={cancelSelectedTicket} basic color="grey" content='Cancel' />
+                        <Button as={Link} to={`/manage/${ticket.id}`} basic color="blue" content='Edit'/>
+                        <Button as={Link} to={`/tickets`} basic color="grey" content='Cancel' />
                     </Button.Group>
                 </Modal.Content>
             </Modal>
         </>
     )
-}
+})

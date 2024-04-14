@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Ticket } from "../models/ticket";
 import agent from "../api/agent";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from "uuid";
 
 export default class TicketStore {
   ticketRegistry = new Map<string, Ticket>();
@@ -15,53 +15,64 @@ export default class TicketStore {
   }
 
   get ticketsByDate() {
-    return Array.from(this.ticketRegistry.values()).sort((a, b) => 
-      Date.parse(b.dateCreated) - Date.parse(a.dateCreated));
+    return Array.from(this.ticketRegistry.values()).sort(
+      (a, b) => Date.parse(b.dateCreated) - Date.parse(a.dateCreated)
+    );
   }
 
   loadTickets = async () => {
     this.setLoadingInitial(true);
     try {
       const tickets = await agent.Tickets.list();
-      runInAction(() => {
         tickets.forEach((ticket) => {
-          ticket.dateCreated = ticket.dateCreated.split("T")[0];
-          this.ticketRegistry.set(ticket.id, ticket);
-        });
+          this.setTicket(ticket);
         this.setLoadingInitial(false);
       });
     } catch (error) {
-      console.log(error);
-      runInAction(() => {
+        console.log(error);
         this.setLoadingInitial(false);
-      });
     }
+  };
+
+  loadTicket = async (id: string) => {
+    let ticket = this.getTicket(id);
+    if (ticket) {
+      this.selectedTicket = ticket;
+      return ticket;
+    }
+    else {
+      this.setLoadingInitial(true);
+      try {
+        ticket = await agent.Tickets.details(id);
+        this.setTicket(ticket);
+        runInAction(() => this.selectedTicket = ticket);
+        this.setLoadingInitial(false);
+        return ticket;
+      } catch (error) {
+        runInAction(() => {
+          console.log(error);
+          this.setLoadingInitial(false);
+        })
+      }
+    }
+  };
+
+    private setTicket = (ticket: Ticket) => {
+    ticket.dateCreated = ticket.dateCreated.split("T")[0];
+    this.ticketRegistry.set(ticket.id, ticket);
+  };
+
+  private getTicket = (id: string) => {
+    return this.ticketRegistry.get(id);
   };
 
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
 
-  selectTicket = (id: string) => {
-    this.selectedTicket = this.ticketRegistry.get(id);
-  };
-
-  cancelSelectedTicket = () => {
-    this.selectedTicket = undefined;
-  };
-
-  openForm = (id?: string) => {
-    id ? this.selectTicket(id) : this.cancelSelectedTicket();
-    this.editMode = true;
-  };
-
-  closeForm = () => {
-    this.editMode = false;
-  };
-
   createTicket = async (ticket: Ticket) => {
     this.loading = true;
-    ticket.id = uuid()
+    ticket.id = uuid();
     try {
       await agent.Tickets.create(ticket);
       runInAction(() => {
@@ -69,14 +80,14 @@ export default class TicketStore {
         this.selectedTicket = ticket;
         this.editMode = false;
         this.loading = false;
-      })
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       runInAction(() => {
         this.loading = false;
-      })
+      });
     }
-  } 
+  };
   updateTicket = async (ticket: Ticket) => {
     this.loading = true;
     try {
@@ -86,14 +97,14 @@ export default class TicketStore {
         this.selectedTicket = ticket;
         this.editMode = false;
         this.loading = false;
-      })
+      });
     } catch (error) {
       console.log(error);
       runInAction(() => {
         this.loading = false;
-      })
+      });
     }
-  }
+  };
 
   deleteTicket = async (id: string) => {
     this.loading = true;
@@ -101,14 +112,13 @@ export default class TicketStore {
       await agent.Tickets.delete(id);
       runInAction(() => {
         this.ticketRegistry.delete(id);
-        if (this.selectedTicket?.id === id) this.cancelSelectedTicket();
         this.loading = false;
-      })
+      });
     } catch (error) {
       console.log(error);
       runInAction(() => {
         this.loading = false;
-      })
+      });
     }
-  }
+  };
 }

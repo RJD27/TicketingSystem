@@ -1,30 +1,26 @@
-import { useEffect } from 'react';
 import { Container, Grid } from 'semantic-ui-react';
 import NavBar from './NavBar';
-import TicketDashboard from '../../features/tickets/dashboard/TicketDashboard';
-import LoadingComponent from './LoadingComponent';
-import { useStore } from '../stores/store';
+import { Outlet, useLocation } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
 
 function App() {
-  const {ticketStore} = useStore();
-
-  useEffect(() => {
-    ticketStore.loadTickets();
-  }, [ticketStore])
-
-  if (ticketStore.loadingInitial) return <LoadingComponent content='Loading app'/>
+  const location = useLocation();
 
   return (
-    <Grid >
-      <Grid.Column >
-        <Container>
-          <NavBar />
-        </Container>
-      </Grid.Column>
-      <Grid.Column mobile={16} tablet={13} computer={13} floated="right" id="content">
-        <TicketDashboard />
-      </Grid.Column>
-    </Grid>
+    <>
+      {location.pathname == '/' ? <HomePage /> : (
+        <Grid>
+          <Grid.Column>
+            <Container>
+              <NavBar />
+            </Container>
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={13} computer={13} floated="right" id="content">
+            <Outlet />
+          </Grid.Column>
+        </Grid>
+      )}
+    </>
   )
 }
 

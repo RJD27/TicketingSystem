@@ -1,6 +1,7 @@
 import { Grid, Header, Table } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
+import { useNavigate } from "react-router-dom";
 
 export default observer(function TicketList() {
     // const [activePage, setActivePage] = useState(1);
@@ -11,6 +12,11 @@ export default observer(function TicketList() {
     // const currentTickets = tickets.slice(indexOfFirstTicket, indexOfLastTicket); currentTickets
     const {ticketStore} = useStore()
     const {ticketsByDate} = ticketStore;
+    const navigate = useNavigate();
+
+    const handleRowClick = (id: string) => {
+        navigate(`/tickets/${id}`);
+      };
 
     return (
         <div>
@@ -33,7 +39,7 @@ export default observer(function TicketList() {
                 </Table.Header>
                 <Table.Body>
                     {ticketsByDate.map((ticket) => (
-                        <Table.Row key={ticket.id} onClick={() => ticketStore.selectTicket(ticket.id)}>
+                        <Table.Row key={ticket.id}  onClick={() => handleRowClick(ticket.id)}>
                             <Table.Cell>
                                 {ticket.title}
                             </Table.Cell>

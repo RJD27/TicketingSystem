@@ -1,14 +1,19 @@
 import { Grid } from "semantic-ui-react";
 import TicketList from "./TicketList";
-import TicketDetails from "../details/TicketDetails";
-import TicketForm from "../form/TicketForm";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 export default observer(function TicketDashboard() {
-
     const {ticketStore} = useStore();
-    const {selectedTicket, editMode, deleteTicket, loading} = ticketStore;
+    const {loadTickets, ticketRegistry} = ticketStore;
+
+    useEffect(() => {
+      if(ticketRegistry.size <= 1) loadTickets();
+    }, [loadTickets])
+  
+    if (ticketStore.loadingInitial) return <LoadingComponent content='Loading app'/>
 
     return (
         <Grid style={{ marginTop: '5px' }}>
@@ -16,13 +21,6 @@ export default observer(function TicketDashboard() {
                 <TicketList />
             </Grid.Column>
             <Grid.Column width={6}>
-                {selectedTicket && !editMode &&
-                    <TicketDetails
-                        deleteTicket={deleteTicket}
-                        submitting={loading}
-                    />}
-                {editMode &&
-                    <TicketForm />}
             </Grid.Column>
         </Grid>
     )

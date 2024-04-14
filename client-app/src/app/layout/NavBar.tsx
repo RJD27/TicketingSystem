@@ -1,12 +1,9 @@
 import "semantic-ui-css/semantic.min.css";
 import { Button, Grid, Icon, Menu } from "semantic-ui-react";
 import "./NavBar.css";
-import { useStore } from "../stores/store";
+import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
-
-  const {ticketStore} = useStore();
-
   return (
     <div className="App">
       <Grid padded className="tablet computer only">
@@ -29,7 +26,7 @@ export default function NavBar() {
               <Icon name='th' />
               Overview
             </Menu.Item>
-            <Menu.Item as="a">
+            <Menu.Item as={NavLink} to='/tickets'>
               <Icon name="users" />
               All Tickets
             </Menu.Item>
@@ -37,7 +34,7 @@ export default function NavBar() {
               <Icon name="user" />
               Assigned to Me
             </Menu.Item>
-            <Menu.Item as="a" onClick={() => ticketStore.openForm()}>
+            <Menu.Item as={NavLink} to="/createTicket">
               <Icon name="plus circle" />
               Create Ticket
             </Menu.Item>
